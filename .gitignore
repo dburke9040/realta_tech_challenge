@@ -1,0 +1,10 @@
+target/
+api/target/
+
+ui/node_modules/
+ui/test-results/
+ui/playwright-report/
+ui/*.png
+
+.env
+*.log
