@@ -31,3 +31,64 @@ API Issues Found:
 - Rooms endpoint nests the array in a 'rooms' object for no real reason.
 - Booking can be created for a non-existent room.
 - POST /api/booking response does not include the user's email or phone, even though it does return first name, last name, dates, etc. Either just the booking ID should be returned, or all of it should be returned for consistency.
+
+Running tests and reports:
+
+Prerequisites:
+
+- Node.js and npm for the Playwright UI tests.
+- Karate CLI installed for the API tests.
+
+Playwright UI tests:
+
+```powershell
+cd ui
+npm install
+npx playwright install chromium
+npm test
+```
+
+To view the Playwright HTML report:
+
+```powershell
+cd ui
+npm run report
+```
+
+The report is generated in:
+
+```text
+ui/playwright-report/index.html
+```
+
+Karate API tests:
+
+The API tests are in:
+
+```text
+api/features
+```
+
+To run the Karate tests:
+
+```powershell
+cd api
+karate features
+```
+
+the Karate HTML report can be viewed from:
+
+```text
+api/target/karate-reports/karate-summary.html
+```
+
+CI/CD:
+
+- I would run the API tests first as they are faster.
+- After that I would run the Playwright UI tests in headless Chromium.
+- In the pipeline, first install the dependencies
+- I would publish the test reports as pipeline artifacts
+- The '@known-bug @ignore' scenarios would stay out of the normal pipeline while the bugs are still open.
+- For pull requests I would run the main API and UI smoke/regression tests.
+- For a scheduled nightly run I would run the full suite and keep Playwright traces/screenshots/videos for failures.
+- Values like baseUrl, username, and password should be stored as pipeline variables/secrets instead of hardcoding them.

@@ -10,9 +10,9 @@ export class AdminPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.usernameInput = page.locator('#username');
-    this.passwordInput = page.locator('#password');
-    this.loginButton = page.locator('#doLogin');
+    this.usernameInput = page.getByLabel('Username');
+    this.passwordInput = page.getByLabel('Password');
+    this.loginButton = page.getByRole('button', { name: 'Login' });
     this.logoutButton = page.getByRole('button', { name: 'Logout' });
   }
 
@@ -49,7 +49,7 @@ export class AdminPage {
   }
 
   roomColumn(roomRow: Locator, columnIndex: number): Locator {
-    return roomRow.locator('xpath=./div').nth(columnIndex);
+    return roomRow.locator(':scope > div').nth(columnIndex);
   }
 
   async expectRoomDetailsVisible(room: PublicRoomDetails): Promise<void> {

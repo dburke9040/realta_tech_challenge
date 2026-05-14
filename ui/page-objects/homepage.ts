@@ -13,7 +13,7 @@ export class Homepage {
 
   constructor(page: Page) {
     this.page = page;
-    this.contactNameInput = page.getByTestId('ContactName');
+    this.contactNameInput = page.getByLabel('Name');
   }
 
   async goto(): Promise<void> {
@@ -22,9 +22,9 @@ export class Homepage {
 
   async expectContactFormVisible(): Promise<void> {
     await expect(this.contactNameInput).toBeVisible();
-    await expect(this.page.getByTestId('ContactEmail')).toBeVisible();
-    await expect(this.page.getByTestId('ContactPhone')).toBeVisible();
-    await expect(this.page.getByTestId('ContactSubject')).toBeVisible();
+    await expect(this.page.getByLabel('Email')).toBeVisible();
+    await expect(this.page.getByLabel('Phone')).toBeVisible();
+    await expect(this.page.getByLabel('Subject')).toBeVisible();
     await expect(this.page.getByTestId('ContactDescription')).toBeVisible();
     await expect(this.page.getByRole('button', { name: 'Submit' })).toBeVisible();
   }
@@ -69,7 +69,7 @@ export class Homepage {
     const features = await card.locator('.badge').allInnerTexts();
 
     return {
-      type: (await card.locator('.card-title').innerText()).trim(),
+      type: (await card.getByRole('heading').innerText()).trim(),
       price: priceText.match(/\d+/)?.[0] ?? '',
       details: features.map((feature) => feature.trim()).join(', ')
     };
